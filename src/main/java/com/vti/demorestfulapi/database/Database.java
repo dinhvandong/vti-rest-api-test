@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
@@ -18,14 +19,13 @@ import java.util.Set;
 
 @Configuration
 public class Database {
-
     @Autowired
     PasswordEncoder encoder;
 
 
+
     @Bean
     CommandLineRunner initDatabase(RoleRepository roleRepository, UserRepository userRepository){
-
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
@@ -36,7 +36,7 @@ public class Database {
                     roleRepository.save(role1);
 
                     Role role2 = new Role();
-                    role2.setId(1);
+                    role2.setId(2);
                     role2.setName(ERole.ROLE_MANAGER);
                     roleRepository.save(role2);
 
@@ -54,14 +54,8 @@ public class Database {
                 if(userRepository.findAll().size()==0){
                     User admin = new User();
                     admin.setId(1l);
-//                    admin.setUserName("super_admin@fpt.edu.vn");
                     admin.setEmail("super_admin@fpt.edu.vn");
                     admin.setUsername("super_admin");
-//                    admin.setFullName("Super");
-//                    admin.setCreatedTime(new Date());
-//                    admin.setParentID(0);
-//                    admin.setDepartmentID(0);
-//                    admin.setNote("This is super account");
                     Set<Role> roles = new HashSet<>();
                     admin.setPassword(encoder.encode("Abcd1234@#"));
                     Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
